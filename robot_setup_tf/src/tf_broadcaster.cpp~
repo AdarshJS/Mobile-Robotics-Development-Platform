@@ -1,0 +1,25 @@
+//This program publishes the transform base_link->base_laser
+//we would need this code for publishing <the frame attached to incoming scans> → base_link transform 
+// We in fact need the opposite transform
+// We DONT NEED THIS CODE PUBLISH THE TRANSFORM WE CAN USE STATIC_TRANSFORM_PUBLISHER which can be used as a command line tool
+//static_transform_publisher x y z qx qy qz qw frame_id child_frame_id  period_in_ms
+
+#include <ros/ros.h>
+#include <tf/transform_broadcaster.h>
+
+int main(int argc, char** argv){
+  ros::init(argc, argv, "robot_tf_publisher");
+  ros::NodeHandle n;
+
+  ros::Rate r(100);
+
+  tf::TransformBroadcaster broadcaster;// transform broadcaster object that is used to send the tf through th wire
+
+  while(n.ok()){
+    broadcaster.sendTransform(
+      tf::StampedTransform(
+        tf::Transform(tf::Quaternion(0, 0, 0, 1), tf::Vector3(0.1, 0.0, 0.2)),/*this is for the example given in the tutorial. There is no rotation so in quaternion is set w=1 the other 3 arguments are roll, pitch and yaw*/
+        ros::Time::now(),"base_link"/*parent frame*/, "base_laser"/*child frame*/));//NOTE: The translation is in METERS
+    r.sleep();
+  }
+}

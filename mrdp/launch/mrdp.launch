@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+	<include file="$(find freenect_launch)/launch/freenect.launch"/>
+	<node name="odometry" pkg="mrdp" type="odometry"/>
+	<node name="depthimage_to_laserscan" pkg="depthimage_to_laserscan" type="depthimage_to_laserscan">
+		<remap from="image" to="/camera/depth/image_raw"/>
+	</node>
+	
+</launch>

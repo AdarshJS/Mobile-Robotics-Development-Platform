@@ -1,0 +1,13 @@
+<launch>
+  <include file="$(find freenect_launch)/launch/freenect.launch"/>
+  <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan" output="screen">
+    <remap from="image" to="/camera/depth/image_raw"/>
+  </node>
+
+  <node pkg="mrdp" type="Odometry2" name="Odometry2" output="screen">
+  </node>
+  
+ 
+  
+  <node pkg="tf" type="static_transform_publisher" name="laserscan_broadcaster" args="0.14 0 0.17 0 0 0 1 base_link camera_link 100" />
+</launch>
